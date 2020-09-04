@@ -1,0 +1,31 @@
+#Importar Módulo AD
+Import-Module activedirectory
+
+#Get nos grupos da floresta
+$Groups = Get-ADGroup -Filter * -resultpagesize 2147483647
+
+#Definição de arquivo de output
+$file = "C:\temp\users.csv"
+
+#Adicionar cabeçalho ao arquivo
+Add-Content $file "Group;Member;"
+
+#loop para os grupos, verificando 1 de cada vez
+foreach ($g in $Groups) {
+
+#definição de variável passando o Samaccountname do grupo
+$Grupo = $g.SamAccountName
+
+#identificando usuários de cada grupo
+$users = Get-ADGroupMember -Identity "$Grupo"
+
+#loop para exportar usuários separadamente
+foreach ($u in $users) {
+
+#definição de variável passando o Samaccountname do usuario
+$Member = $u.SamAccountName
+
+#escrevendo o samaccountname do grupo e do usuario no arquivo
+Add-Content $file "$ngroup;$Member;"
+}
+}

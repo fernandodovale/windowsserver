@@ -1,0 +1,16 @@
+#Importação de módulo do activedirectory
+Import-Module activedirectory
+
+#importação do arquivo CSV que contém os usuários e grupos
+$csv = Import-Csv "c:\temp\users.csv" -Delimiter ";"
+
+#loop para percorrer cada linha do CSV
+foreach ($c in $csv) {
+
+#definição das variáveis usando cada coluna do CSV
+$Grupo = $c.group
+$Membro = $c.member
+
+#incluindo os usuarios nos grupos
+Add-ADGroupMember -Identity "$grupo" -Members "$membro"
+}
